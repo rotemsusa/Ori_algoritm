@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>סיכום למבחן – מדעי המחשב כיתה ז'</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fdf6ec;
+    --paper:#fffdf8;
+    --ink:#2b2a26;
+    --muted:#7a756b;
+    --accent:#e4572e;
+    --accent2:#17a398;
+    --gold:#f3a712;
+    --code-bg:#1f2233;
+    --code-ink:#a9f0d1;
+    --line:rgba(0,0,0,.09);
+    --green:#1b998b;
+    --red:#d7263d;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Heebo',sans-serif;
+    background:
+      radial-gradient(700px 400px at 100% -5%, rgba(228,87,46,.10), transparent 60%),
+      radial-gradient(600px 500px at 0% 100%, rgba(23,163,152,.10), transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    line-height:1.75;
+    padding:22px 14px 90px;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+
+  header{
+    text-align:center;
+    padding:34px 22px 30px;
+    background:linear-gradient(135deg,#fff,#fdf0e4);
+    border:2px solid var(--ink);
+    border-radius:24px;
+    box-shadow:7px 7px 0 var(--ink);
+    margin-bottom:30px;
+    position:relative;
+  }
+  .kicker{
+    font-family:'Fredoka';font-size:13px;letter-spacing:2px;
+    background:var(--ink);color:var(--paper);
+    display:inline-block;padding:5px 16px;border-radius:30px;margin-bottom:14px;
+  }
+  h1{font-family:'Fredoka';font-size:32px;line-height:1.2;margin-bottom:8px}
+  header p{color:var(--muted);font-size:15px}
+
+  /* table of contents */
+  .toc{
+    background:var(--paper);
+    border:2px solid var(--ink);
+    border-radius:20px;
+    padding:20px 22px;
+    margin-bottom:34px;
+    box-shadow:5px 5px 0 rgba(0,0,0,.12);
+  }
+  .toc h2{font-family:'Fredoka';font-size:18px;margin-bottom:12px}
+  .toc ol{list-style:none;counter-reset:t;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .toc li{counter-increment:t}
+  .toc a{
+    display:flex;align-items:center;gap:9px;
+    text-decoration:none;color:var(--ink);font-size:14.5px;font-weight:500;
+    padding:8px 10px;border-radius:11px;transition:.15s;
+  }
+  .toc a:hover{background:rgba(228,87,46,.1)}
+  .toc a::before{
+    content:counter(t);font-family:'Fredoka';font-size:13px;
+    background:var(--accent);color:#fff;min-width:24px;height:24px;
+    border-radius:7px;display:grid;place-items:center;flex-shrink:0;
+  }
+
+  section{
+    background:var(--paper);
+    border:2px solid var(--ink);
+    border-radius:22px;
+    padding:26px 24px;
+    margin-bottom:26px;
+    box-shadow:5px 5px 0 rgba(0,0,0,.12);
+    scroll-margin-top:16px;
+  }
+  .sec-head{display:flex;align-items:center;gap:13px;margin-bottom:16px}
+  .sec-num{
+    font-family:'Fredoka';font-size:20px;
+    background:var(--accent2);color:#fff;
+    min-width:42px;height:42px;border-radius:12px;
+    display:grid;place-items:center;flex-shrink:0;
+    box-shadow:3px 3px 0 var(--ink);
+  }
+  .sec-head h2{font-family:'Fredoka';font-size:23px;line-height:1.2}
+
+  section p{margin-bottom:12px;font-size:16px}
+  section h3{
+    font-family:'Fredoka';font-size:17px;margin:18px 0 8px;
+    color:var(--accent);display:flex;align-items:center;gap:7px;
+  }
+  b,strong{color:var(--accent)}
+  .term{background:var(--gold);color:#1f1c10;padding:1px 7px;border-radius:6px;font-weight:700;white-space:nowrap}
+
+  /* code block */
+  .code{
+    direction:ltr;text-align:left;
+    background:var(--code-bg);color:var(--code-ink);
+    font-family:'Fredoka',monospace;font-size:14.5px;
+    border-radius:13px;padding:14px 16px;margin:12px 0;
+    white-space:pre;overflow-x:auto;line-height:1.65;
+    border:2px solid var(--ink);box-shadow:3px 3px 0 rgba(0,0,0,.2);
+  }
+  .code .cm{color:#7f8aa3}      /* comment */
+  .code .out{color:#f3a712}     /* output highlight */
+  code.inl{
+    direction:ltr;display:inline-block;
+    background:#efe7da;color:#1f2233;
+    font-family:'Fredoka',monospace;font-size:14px;
+    padding:1px 7px;border-radius:6px;border:1px solid var(--line);
+  }
+
+  /* example box */
+  .ex{
+    background:linear-gradient(180deg,#fff,#f6fbf9);
+    border:2px dashed var(--accent2);
+    border-radius:14px;padding:13px 16px;margin:14px 0;
+  }
+  .ex .lbl{font-family:'Fredoka';font-size:13px;color:var(--accent2);display:block;margin-bottom:5px}
+
+  /* algorithm steps (numbered flow) */
+  .steps{counter-reset:st;margin:14px 0;padding:0;list-style:none}
+  .steps li{
+    counter-increment:st;
+    position:relative;
+    background:#fff;
+    border:2px solid var(--ink);
+    border-radius:12px;
+    padding:11px 14px 11px 14px;
+    margin-bottom:9px;
+    font-size:15px;
+    box-shadow:3px 3px 0 rgba(0,0,0,.1);
+    display:flex;gap:11px;align-items:flex-start;
+  }
+  .steps li::before{
+    content:counter(st);
+    font-family:'Fredoka';font-size:14px;
+    background:var(--gold);color:#1f1c10;
+    min-width:26px;height:26px;border-radius:8px;
+    display:grid;place-items:center;flex-shrink:0;
+  }
+  .arrow-flow{
+    text-align:center;font-family:'Fredoka';color:var(--accent2);
+    font-size:14px;margin:12px 0;letter-spacing:1px;
+  }
+
+  /* code walkthrough - line by line explanation */
+  .walk{margin:14px 0;border:2px solid var(--ink);border-radius:14px;overflow:hidden;box-shadow:4px 4px 0 rgba(0,0,0,.14)}
+  .walk-row{display:flex;border-top:1px solid var(--line)}
+  .walk-row:first-child{border-top:none}
+  .walk-code{
+    direction:ltr;text-align:left;
+    background:var(--code-bg);color:var(--code-ink);
+    font-family:'Fredoka',monospace;font-size:13.5px;
+    padding:11px 13px;flex:0 0 46%;white-space:pre-wrap;word-break:break-word;
+    display:flex;align-items:center;
+  }
+  .walk-exp{
+    background:#fffdf8;padding:11px 14px;flex:1;font-size:14px;line-height:1.55;
+    display:flex;align-items:center;
+  }
+  @media(max-width:520px){
+    .walk-row{flex-direction:column}
+    .walk-code{flex:1 1 auto}
+  }
+
+  .tip{
+    background:#fff6e6;border-right:5px solid var(--gold);
+    border-radius:10px;padding:12px 15px;margin:14px 0;font-size:15px;
+  }
+  .tip .lbl{font-weight:700;color:#b9790a}
+  .warn{
+    background:#fdeaec;border-right:5px solid var(--red);
+    border-radius:10px;padding:12px 15px;margin:14px 0;font-size:15px;
+  }
+  .warn .lbl{font-weight:700;color:var(--red)}
+  .warn b,.warn strong{color:var(--red)}
+
+  /* mini table */
+  .tbl{width:100%;border-collapse:collapse;margin:14px 0;font-size:15px;overflow:hidden;border-radius:12px;border:2px solid var(--ink)}
+  .tbl th{background:var(--ink);color:var(--paper);font-family:'Fredoka';padding:9px 11px;font-weight:600;font-size:14px}
+  .tbl td{padding:9px 11px;border-top:1px solid var(--line)}
+  .tbl tr:nth-child(even){background:rgba(0,0,0,.025)}
+  .tbl code{direction:ltr;display:inline-block;font-family:'Fredoka',monospace;background:#efe7da;padding:1px 6px;border-radius:5px;font-size:13.5px}
+  .tbl .t{color:var(--green);font-weight:700}
+  .tbl .f{color:var(--red);font-weight:700}
+
+  .top-link{display:block;text-align:center;color:var(--muted);font-size:13px;text-decoration:none;margin-top:10px}
+  .top-link:hover{color:var(--accent)}
+
+  footer{text-align:center;color:var(--muted);font-size:14px;margin-top:34px;padding:0 10px}
+  .big-heart{font-size:26px;display:block;margin-bottom:6px}
+
+  @media(max-width:520px){
+    .toc ol{grid-template-columns:1fr}
+    h1{font-size:26px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header id="top">
+    <span class="kicker">מדעי המחשב · כיתה ז'</span>
+    <h1>סיכום למבחן 📘🐢</h1>
+    <p>כל מה שצריך לדעת — עם דוגמאות, כתיבת אלגוריתם, הסבר קוד שורה-אחר-שורה, מלכודות וטיפים</p>
+  </header>
+
+  <nav class="toc">
+    <h2>📑 מה יש בסיכום</h2>
+    <ol>
+      <li><a href="#s1">אלגוריתם + כתיבת אלגוריתם</a></li>
+      <li><a href="#s2">הצב הגרפי (turtle)</a></li>
+      <li><a href="#s3">משתנים וסוגיהם</a></li>
+      <li><a href="#s4">הפעולה type()</a></li>
+      <li><a href="#s5">קלט ופלט (input / print)</a></li>
+      <li><a href="#s6">אופרטורים חישוביים</a></li>
+      <li><a href="#s7">שארית החלוקה (%)</a></li>
+      <li><a href="#s8">אופרטורי יחס</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1 -->
+  <section id="s1">
+    <div class="sec-head"><span class="sec-num">1</span><h2>מהו אלגוריתם?</h2></div>
+    <p><span class="term">אלגוריתם</span> הוא רצף הוראות ברור ומסודר שמוביל לפתרון של בעיה. כל שלב חייב להיות מובן וחד-משמעי, והאלגוריתם חייב <b>להסתיים</b> אחרי מספר סופי של שלבים.</p>
+
+    <h3>🍰 דוגמה מהחיים</h3>
+    <p>מתכון לעוגה הוא אלגוריתם: יש סדר פעולות מדויק (קלוט ביצים → ערבב → אפה 30 דקות), וכל מי שיעקוב אחריו יקבל את אותה תוצאה.</p>
+
+    <div class="ex">
+      <span class="lbl">3 תכונות של אלגוריתם טוב</span>
+      1. <b>ברור</b> — כל שלב מובן ולא משתמע לשתי פנים<br>
+      2. <b>מסודר</b> — השלבים בסדר הנכון<br>
+      3. <b>מסתיים</b> — מגיע לסוף ולא נתקע לנצח
+    </div>
+
+    <div class="tip"><span class="lbl">💡 טיפ למבחן:</span> אלגוריתם הוא <b>לא</b> שפת תכנות ולא תוכנית מחשב. אפשר לכתוב אותו במילים, בציור (תרשים זרימה) או בקוד.</div>
+
+    <h3>✍️ איך כותבים אלגוריתם — שלב אחר שלב</h3>
+    <p>נניח שצריך לפתור: <b>"קלוט שני מספרים והדפס את הגדול מביניהם"</b>. כותבים את האלגוריתם <b>קודם במילים</b>, ורק אז מתרגמים לקוד:</p>
+
+    <p style="margin-bottom:6px;font-weight:700;color:var(--accent2)">שלב 1 — האלגוריתם במילים:</p>
+    <ol class="steps">
+      <li>קלוט מספר ראשון ושמור אותו במשתנה a</li>
+      <li>קלוט מספר שני ושמור אותו במשתנה b</li>
+      <li>אם a גדול מ-b → הדפס את a</li>
+      <li>אחרת → הדפס את b</li>
+    </ol>
+
+    <div class="arrow-flow">⬇ מתרגמים לקוד ⬇</div>
+
+    <p style="margin-bottom:6px;font-weight:700;color:var(--accent2)">שלב 2 — אותו אלגוריתם בקוד:</p>
+    <div class="code">a = int(input("מספר ראשון: "))
+b = int(input("מספר שני: "))
+if a &gt; b:
+    print(a)
+else:
+    print(b)</div>
+
+    <div class="ex">
+      <span class="lbl">דוגמה שנייה: אלגוריתם לציור ריבוע (במילים)</span>
+      <ol class="steps" style="margin:8px 0 0">
+        <li>הכן את הצב הגרפי</li>
+        <li>חזור 4 פעמים על: נוע 100 צעדים קדימה, ואז הסתובב 90 מעלות</li>
+        <li>סיים — התקבל ריבוע</li>
+      </ol>
+    </div>
+
+    <div class="tip"><span class="lbl">💡 הסוד:</span> תמיד כדאי לכתוב את האלגוריתם <b>קודם במילים שלך</b>, ואז להפוך כל שלב לשורת קוד. ככה לא מתבלבלים.</div>
+    <a href="#top" class="top-link">↑ חזרה למעלה</a>
+  </section>
+
+  <!-- 2 -->
+  <section id="s2">
+    <div class="sec-head"><span class="sec-num">2</span><h2>הצב הגרפי (turtle)</h2></div>
+    <p>הצב הגרפי הוא כלי בפייתון שמצייר על המסך לפי פקודות. מדמיינים צב קטן שמחזיק עט — הוא נע, מסתובב, ומשאיר קו אחריו.</p>
+
+    <h3>🛠️ הפקודות החשובות</h3>
+    <table class="tbl">
+      <tr><th>פקודה</th><th>מה היא עושה</th></tr>
+      <tr><td><code>t.forward(100)</code></td><td>נע 100 צעדים קדימה (ומצייר קו)</td></tr>
+      <tr><td><code>t.backward(50)</code></td><td>נע 50 צעדים אחורה</td></tr>
+      <tr><td><code>t.right(90)</code></td><td>מסתובב 90 מעלות ימינה</td></tr>
+      <tr><td><code>t.left(45)</code></td><td>מסתובב 45 מעלות שמאלה</td></tr>
+      <tr><td><code>t.penup()</code></td><td>מרים את העט (נע בלי לצייר)</td></tr>
+      <tr><td><code>t.pendown()</code></td><td>מוריד את העט (חוזר לצייר)</td></tr>
+    </table>
+
+    <h3>⬜ ציור ריבוע</h3>
+    <div class="code">import turtle
+t = turtle.Turtle()
+
+for i in range(4):      <span class="cm"># חוזרים 4 פעמים</span>
+    t.forward(100)      <span class="cm"># צלע</span>
+    t.right(90)         <span class="cm"># פינה</span></div>
+
+    <h3>🔍 הסבר הקוד — שורה אחר שורה</h3>
+    <div class="walk">
+      <div class="walk-row">
+        <div class="walk-code">import turtle</div>
+        <div class="walk-exp">מביא את הכלי של הצב הגרפי לתוך התוכנית.</div>
+      </div>
+      <div class="walk-row">
+        <div class="walk-code">t = turtle.Turtle()</div>
+        <div class="walk-exp">יוצר צב חדש ושומר אותו במשתנה <b>t</b>.</div>
+      </div>
+      <div class="walk-row">
+        <div class="walk-code">for i in range(4):</div>
+        <div class="walk-exp">לולאה שחוזרת <b>4 פעמים</b> על השורות שמתחת (אלו עם הרווח).</div>
+      </div>
+      <div class="walk-row">
+        <div class="walk-code">    t.forward(100)</div>
+        <div class="walk-exp">מצייר צלע אחת באורך 100.</div>
+      </div>
+      <div class="walk-row">
+        <div class="walk-code">    t.right(90)</div>
+        <div class="walk-exp">מסתובב 90° לפינה הבאה. אחרי 4 חזרות → ריבוע סגור.</div>
+      </div>
+    </div>
+
+    <div class="tip"><span class="lbl">💡 הנוסחה הקסומה:</span> זווית הסיבוב = <b>360 חלקי מספר הצלעות</b>.<br>
+    משולש → 360÷3 = <b>120°</b> · ריבוע → 360÷4 = <b>90°</b> · מחומש → 360÷5 = <b>72°</b> · משושה → 360÷6 = <b>60°</b></div>
+
+    <h3>✂️ ציור שני קווים נפרדים</h3>
+    <div class="code">t.forward(100)   <span class="cm"># קו ראשון</span>
+t.penup()        <span class="cm"># מרים עט</span>
+t.forward(50)    <span class="cm"># זז בלי לצייר</span>
+t.pendown()      <span class="cm"># מוריד עט</span>
+t.forward(100)   <span class="cm"># קו שני</span></div>
+    <a href="#top" class="top-link">↑ חזרה למעלה</a>
+  </section>
+
+  <!-- 3 -->
+  <section id="s3">
+    <div class="sec-head"><span class="sec-num">3</span><h2>משתנים וסוגיהם</h2></div>
+    <p><span class="term">משתנה</span> הוא "קופסה" עם שם, ששומרת בתוכה ערך. מגדירים אותו עם סימן <code class="inl">=</code> (השמה): השם משמאל, הערך מימין.</p>
+    <div class="code">age = 13        <span class="cm"># השם age מקבל את הערך 13</span>
+name = "Rotem"  <span class="cm"># השם name מקבל מחרוזת</span></div>
+
+    <h3>🔤 ארבעת סוגי המשתנים</h3>
+    <table class="tbl">
+      <tr><th>סוג</th><th>מה זה</th><th>דוגמה</th></tr>
+      <tr><td><b>int</b></td><td>מספר שלם</td><td><code>x = 7</code></td></tr>
+      <tr><td><b>float</b></td><td>מספר עשרוני (עם נקודה)</td><td><code>x = 3.5</code></td></tr>
+      <tr><td><b>str</b></td><td>מחרוזת / טקסט (במרכאות)</td><td><code>x = "hi"</code></td></tr>
+      <tr><td><b>bool</b></td><td>אמת או שקר</td><td><code>x = True</code></td></tr>
+    </table>
+
+    <div class="warn"><span class="lbl">⚠️ מלכודת נפוצה:</span> כשיש <b>מרכאות</b> — זו תמיד מחרוזת (str), גם אם בפנים יש מספרים!<br>
+    <code class="inl">x = 5</code> זה int · <code class="inl">x = "5"</code> זה str</div>
+
+    <div class="ex">
+      <span class="lbl">תרגול זיהוי</span>
+      <code class="inl">a = 100</code> → int (מספר שלם)<br>
+      <code class="inl">b = 99.9</code> → float (יש נקודה)<br>
+      <code class="inl">c = "100"</code> → str (יש מרכאות)<br>
+      <code class="inl">d = False</code> → bool (אמת/שקר)
+    </div>
+    <a href="#top" class="top-link">↑ חזרה למעלה</a>
+  </section>
+
+  <!-- 4 -->
+  <section id="s4">
+    <div class="sec-head"><span class="sec-num">4</span><h2>הפעולה type()</h2></div>
+    <p>הפעולה <code class="inl">type()</code> אומרת לנו <b>מה הסוג</b> של ערך או משתנה. שמים בתוך הסוגריים את מה שרוצים לבדוק.</p>
+
+    <div class="code">print(type(5))       <span class="out"># &lt;class 'int'&gt;</span>
+print(type(3.5))     <span class="out"># &lt;class 'float'&gt;</span>
+print(type("hi"))    <span class="out"># &lt;class 'str'&gt;</span>
+print(type(True))    <span class="out"># &lt;class 'bool'&gt;</span></div>
+
+    <h3>🧠 דוגמה שדורשת מחשבה</h3>
+    <div class="code">x = "7"
+print(type(x))       <span class="out"># &lt;class 'str'&gt;</span></div>
+    <p>למרות שיש בפנים את הספרה 7 — היא בתוך מרכאות, ולכן הסוג הוא <b>str</b> ולא int.</p>
+
+    <div class="tip"><span class="lbl">💡 שימי לב:</span> type() בודק קודם את התוצאה. לדוגמה <code class="inl">type(4 + 2)</code> יחזיר int, כי 4+2=6 שהוא מספר שלם.</div>
+    <a href="#top" class="top-link">↑ חזרה למעלה</a>
+  </section>
+
+  <!-- 5 -->
+  <section id="s5">
+    <div class="sec-head"><span class="sec-num">5</span><h2>קלט ופלט (input / print)</h2></div>
+
+    <h3>📤 פלט — print()</h3>
+    <p>הפקודה <code class="inl">print()</code> מדפיסה למסך. מה שבתוך <b>מרכאות</b> מודפס כטקסט בדיוק כמו שהוא; מה שבלי מרכאות — מחושב.</p>
+    <div class="code">print("שלום")        <span class="out"># שלום</span>
+print(3 + 4)         <span class="out"># 7   (חישוב)</span>
+print("3 + 4")       <span class="out"># 3 + 4   (טקסט)</span>
+print("גיל:", 13)    <span class="out"># גיל: 13   (פסיק מפריד)</span></div>
+
+    <h3>📥 קלט — input()</h3>
+    <p>הפקודה <code class="inl">input()</code> קולטת מה שהמשתמש מקליד. <b>חשוב מאוד:</b> input() תמיד מחזיר <b>מחרוזת</b> (str)!</p>
+
+    <table class="tbl">
+      <tr><th>רוצים לקלוט</th><th>איך כותבים</th></tr>
+      <tr><td>טקסט (שם, עיר)</td><td><code>x = input("שם: ")</code></td></tr>
+      <tr><td>מספר שלם</td><td><code>x = int(input("גיל: "))</code></td></tr>
+      <tr><td>מספר עשרוני</td><td><code>x = float(input("גובה: "))</code></td></tr>
+    </table>
+
+    <div class="warn"><span class="lbl">⚠️ המלכודת הכי חשובה במבחן!</span><br>
+    אם קולטים מספר <b>בלי</b> int(), הוא נשאר מחרוזת — וחיבור מחרוזות פשוט מצמיד אותן:
+    <div class="code" style="margin-top:8px">n = input("מספר: ")   <span class="cm"># המשתמש הקליד 4</span>
+print(n + n)          <span class="out"># 44   (ולא 8!)</span></div>
+    עם <code class="inl">int()</code> זה היה מחשב נכון: 4+4=8.</div>
+
+    <h3>🧩 דוגמה מלאה: קלט → חישוב → פלט</h3>
+    <div class="code">a = int(input("מספר ראשון: "))
+b = int(input("מספר שני: "))
+print("הסכום הוא", a + b)</div>
+
+    <h3>🔍 הסבר הקוד — שורה אחר שורה</h3>
+    <p>ככה "קוראים" קוד: עוברים שורה-שורה ומבינים מה כל אחת עושה. זה בדיוק מה שמבקשים בשאלות "מה התוכנית עושה?".</p>
+    <div class="walk">
+      <div class="walk-row">
+        <div class="walk-code">a = int(input("מספר ראשון: "))</div>
+        <div class="walk-exp">מבקש מהמשתמש מספר, הופך אותו למספר שלם עם <b>int()</b>, ושומר במשתנה <b>a</b>.</div>
+      </div>
+      <div class="walk-row">
+        <div class="walk-code">b = int(input("מספר שני: "))</div>
+        <div class="walk-exp">אותו דבר — קולט מספר שני ושומר במשתנה <b>b</b>.</div>
+      </div>
+      <div class="walk-row">
+        <div class="walk-code">print("הסכום הוא", a + b)</div>
+        <div class="walk-exp">מחשב <b>a + b</b> ומדפיס את התוצאה אחרי הטקסט "הסכום הוא".</div>
+      </div>
+    </div>
+
+    <div class="ex">
+      <span class="lbl">דוגמה לפירוק קוד עם מלכודת — מה יודפס?</span>
+      <div class="walk" style="margin-top:8px;box-shadow:none">
+        <div class="walk-row">
+          <div class="walk-code">x = "10"</div>
+          <div class="walk-exp">x הוא <b>מחרוזת</b> (יש מרכאות!), לא מספר.</div>
+        </div>
+        <div class="walk-row">
+          <div class="walk-code">print(x * 3)</div>
+          <div class="walk-exp">מחרוזת כפול 3 = שכפול → מודפס <b>101010</b> (ולא 30).</div>
+        </div>
+      </div>
+    </div>
+    <a href="#top" class="top-link">↑ חזרה למעלה</a>
+  </section>
+
+  <!-- 6 -->
+  <section id="s6">
+    <div class="sec-head"><span class="sec-num">6</span><h2>אופרטורים חישוביים</h2></div>
+    <table class="tbl">
+      <tr><th>אופרטור</th><th>פעולה</th><th>דוגמה</th><th>תוצאה</th></tr>
+      <tr><td><code>+</code></td><td>חיבור</td><td><code>5 + 2</code></td><td>7</td></tr>
+      <tr><td><code>-</code></td><td>חיסור</td><td><code>5 - 2</code></td><td>3</td></tr>
+      <tr><td><code>*</code></td><td>כפל</td><td><code>5 * 2</code></td><td>10</td></tr>
+      <tr><td><code>/</code></td><td>חילוק</td><td><code>5 / 2</code></td><td>2.5</td></tr>
+      <tr><td><code>//</code></td><td>חילוק שלם</td><td><code>5 // 2</code></td><td>2</td></tr>
+      <tr><td><code>%</code></td><td>שארית</td><td><code>5 % 2</code></td><td>1</td></tr>
+      <tr><td><code>**</code></td><td>חזקה</td><td><code>5 ** 2</code></td><td>25</td></tr>
+    </table>
+
+    <h3>🔢 סדר פעולות חשבון</h3>
+    <p>פייתון מחשב לפי הסדר: <b>סוגריים</b> ← <b>חזקה</b> ← <b>כפל/חילוק/שארית</b> ← <b>חיבור/חיסור</b>.</p>
+    <div class="ex">
+      <span class="lbl">דוגמאות מודרגות</span>
+      <code class="inl">3 + 4 * 2</code> → קודם 4×2=8, אז 8+3 = <b>11</b><br>
+      <code class="inl">(3 + 4) * 2</code> → קודם הסוגריים 7, אז 7×2 = <b>14</b><br>
+      <code class="inl">10 - 2 ** 3</code> → קודם חזקה 8, אז 10−8 = <b>2</b>
+    </div>
+
+    <div class="warn"><span class="lbl">⚠️ ההבדל בין / לבין //</span><br>
+    <code class="inl">/</code> תמיד מחזיר <b>float</b> (גם 10/2 נותן 5.0)<br>
+    <code class="inl">//</code> מחזיר חילוק שלם בלי שארית: <code class="inl">17 // 5</code> = <b>3</b></div>
+    <a href="#top" class="top-link">↑ חזרה למעלה</a>
+  </section>
+
+  <!-- 7 -->
+  <section id="s7">
+    <div class="sec-head"><span class="sec-num">7</span><h2>שארית החלוקה (%)</h2></div>
+    <p>האופרטור <code class="inl">%</code> (מודולו) מחזיר את <span class="term">השארית</span> שנשארת אחרי חלוקה.</p>
+
+    <div class="ex">
+      <span class="lbl">איך מחשבים — צעד אחר צעד</span>
+      <code class="inl">17 % 5</code> → כמה פעמים 5 נכנס ב-17? שלוש פעמים (5×3=15). מה נשאר? 17−15 = <b>2</b><br><br>
+      <code class="inl">20 % 4</code> → 4 נכנס ב-20 חמש פעמים בדיוק (4×5=20), לא נשאר כלום → <b>0</b>
+    </div>
+
+    <div class="warn"><span class="lbl">⚠️ מקרה מבלבל:</span> כשהמספר הראשון <b>קטן</b> מהשני, הוא נכנס 0 פעמים, והשארית היא המספר עצמו:<br>
+    <code class="inl">7 % 10</code> = <b>7</b> · <code class="inl">3 % 8</code> = <b>3</b></div>
+
+    <div class="tip"><span class="lbl">💡 השימוש הכי נפוץ: זוגי או אי-זוגי?</span><br>
+    אם <code class="inl">n % 2 == 0</code> → המספר <b>זוגי</b> (מתחלק ב-2 בלי שארית)<br>
+    אם <code class="inl">n % 2 == 1</code> → המספר <b>אי-זוגי</b></div>
+    <a href="#top" class="top-link">↑ חזרה למעלה</a>
+  </section>
+
+  <!-- 8 -->
+  <section id="s8">
+    <div class="sec-head"><span class="sec-num">8</span><h2>אופרטורי יחס</h2></div>
+    <p>אופרטורי יחס <b>משווים</b> בין שני ערכים, והתוצאה היא תמיד <span class="term">True</span> או <span class="term">False</span> (כן או לא).</p>
+
+    <table class="tbl">
+      <tr><th>אופרטור</th><th>משמעות</th><th>דוגמה</th><th>תוצאה</th></tr>
+      <tr><td><code>==</code></td><td>שווה ל-</td><td><code>4 == 4</code></td><td class="t">True</td></tr>
+      <tr><td><code>!=</code></td><td>שונה מ-</td><td><code>4 != 5</code></td><td class="t">True</td></tr>
+      <tr><td><code>&lt;</code></td><td>קטן מ-</td><td><code>6 &lt; 4</code></td><td class="f">False</td></tr>
+      <tr><td><code>&gt;</code></td><td>גדול מ-</td><td><code>6 &gt; 4</code></td><td class="t">True</td></tr>
+      <tr><td><code>&lt;=</code></td><td>קטן או שווה</td><td><code>3 &lt;= 4</code></td><td class="t">True</td></tr>
+      <tr><td><code>&gt;=</code></td><td>גדול או שווה</td><td><code>3 &gt;= 4</code></td><td class="f">False</td></tr>
+    </table>
+
+    <div class="warn"><span class="lbl">⚠️ ההבדל הכי חשוב: = מול ==</span><br>
+    <code class="inl">=</code> (אחד) זה <b>השמה</b> — שם ערך בתוך משתנה: <code class="inl">x = 5</code><br>
+    <code class="inl">==</code> (כפול) זה <b>בדיקה</b> — שואל האם שווה: <code class="inl">x == 5</code></div>
+
+    <div class="ex">
+      <span class="lbl">תרגול מהיר — True או False?</span>
+      <code class="inl">10 == 10</code> → True (שווים)<br>
+      <code class="inl">7 != 7</code> → False (הם כן שווים, אז לא שונים)<br>
+      <code class="inl">5 &gt;= 5</code> → True (שווה נחשב)<br>
+      <code class="inl">2 &gt; 9</code> → False (2 לא גדול מ-9)
+    </div>
+    <a href="#top" class="top-link">↑ חזרה למעלה</a>
+  </section>
+
+  <footer>
+    <span class="big-heart">💕</span>
+    זהו! עברת על כל החומר. קראי שוב את ה"מלכודות" ⚠️ — שם נופלים הכי הרבה.<br>
+    בהצלחה במבחן ביום רביעי 🐢
+  </footer>
+
+</div>
+</body>
+</html>
